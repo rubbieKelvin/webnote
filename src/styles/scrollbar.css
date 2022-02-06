@@ -22,3 +22,28 @@
   @apply bg-accent;
   border-radius: 6px;
 }
+
+pre>code.hljs::-webkit-scrollbar{
+  height: 6px;
+}
+
+pre>code.hljs::-webkit-scrollbar-track {
+  @apply bg-gray-200;
+  border-radius: 6px;
+}
+
+pre>code.hljs::-webkit-scrollbar-thumb {
+  @apply bg-gray-400;
+  border-radius: 6px;
+}
+
+pre>code.hljs::-webkit-scrollbar-thumb:hover {
+  background: rgb(100, 100, 100);
+  border-radius: 6px;
+}
+
+pre>code.hljs::-webkit-scrollbar-thumb:active {
+  /* background: rgb(68, 68, 68); */
+  @apply bg-accent;
+  border-radius: 6px;
+}

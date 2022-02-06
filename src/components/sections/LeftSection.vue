@@ -1,17 +1,17 @@
 <template>
     <div class=" select-none flex gap-2 flex-col text-text flex-grow min-w-[20%] max-w-[20%] py-4">
-        <div class="flex gap-1 px-2">
-            <div class=" group flex-grow bg-elevation flex p-3 rounded-full gap-4">
-                <svg class=" group-focus:text-accent" width="22" height="22" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <div class="px-2">
+            <div class=" group pl-3 bg-elevation flex rounded-full items-center gap-2">
+                <svg class=" group-focus:text-accent h-5 w-5" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M15.75 15.75L11.25 11.25M12.75 7.5C12.75 10.3995 10.3995 12.75 7.5 12.75C4.60051 12.75 2.25 10.3995 2.25 7.5C2.25 4.60051 4.60051 2.25 7.5 2.25C10.3995 2.25 12.75 4.60051 12.75 7.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
                 <input class=" font-dm bg-transparent focus:outline-0 flex-grow" type="text" placeholder="Search notes...">
+                <button @click="new_note_modal_visible=true, $refs.noteTitleInput.focus()" class=" rounded-r-full bg-accent text-white w-12 h-12 items-center flex justify-center">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 3V15M15 9L3 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
             </div>
-            <button @click="new_note_modal_visible=true" class=" bg-accent text-white rounded-full px-4 items-center flex justify-center">
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M9 3V15M15 9L3 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </button>
         </div>
 
         <!-- new-note -->
@@ -19,7 +19,7 @@
         <div :class="{'h-0': !new_note_modal_visible, 'border p-4': new_note_modal_visible}" class=" transition-all duration-200 rounded-md overflow-clip border-stroke flex flex-col gap-2 mx-2">
             <div class="flex">
                 <h3 class="flex-grow font-dm text-sm font-medium text-text">New Note</h3>
-                <button @click="new_note_modal_visible=false" class="hover:bg-gray-300 bg-gray-100 w-6 h-6 flex items-center justify-center rounded-full text-gray-600">
+                <button @click="new_note_modal_visible=false, $refs.noteTitleInput.value=''" class="hover:bg-gray-300 bg-gray-100 w-6 h-6 flex items-center justify-center rounded-full text-gray-600">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M6 18L18 6M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
@@ -28,7 +28,7 @@
 
             <div class="flex flex-col">
                 <p class="font-poppins">Title</p>
-                <input @keypress.esc="new_note_modal_visible=false" @keypress.enter="createNote" ref="noteTitleInput" type="text" placeholder="Note title..." name="" id="" class="px-3 py-2 outline-accent rounded-md border-stroke border">
+                <input @keydown.esc="new_note_modal_visible=false, $refs.noteTitleInput.value=''" @keypress.enter="createNote" ref="noteTitleInput" type="text" placeholder="Note title..." name="" id="" class="px-3 py-2 outline-accent rounded-md border-stroke border">
             </div>
 
             <button @click="createNote" class="p-3 bg-accent rounded-md hover:text-white hover:bg-opacity-100 text-accent font-poppins bg-opacity-20">Create</button>

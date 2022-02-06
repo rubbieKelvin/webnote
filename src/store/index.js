@@ -1,5 +1,6 @@
 import { createStore } from "vuex";
 import {createNote} from '../notes.js'
+import {v4 as uuid4} from 'uuid'
 
 const getNoteBook = (notes, local_id) => {
     if (local_id===null) return null
@@ -13,10 +14,17 @@ const getNoteContentitem = (note, id) => {
     return (item === undefined) ? null : item
 }
 
+const set_active_note = (state, note) => {
+    state.notebook.activeNote = note.local_id
+    state.appmode.noteseditmode = false
+    state.notebook.activeContentItem = null
+    state.appmode.rightsidemode = 'default'
+}
+
+
 export const store = createStore({
     state: {
         notebook: {
-            tags: [],
             notes: [],
             activeNote: null,
             activeContentItem: null
@@ -40,28 +48,36 @@ export const store = createStore({
             state.appmode.noteslistmode = name
         },
 
-        ADD_TAG(state, name){
-            state.notebook.tags.push(name)
-        },
-
         CREATE_NOTE(state, title){
             state.notebook.notes.push(
                 createNote(title)
             )
         },
 
-        SET_ACTIVE_NOTE(state, note){
-            state.notebook.activeNote = note.local_id
-            state.appmode.noteseditmode = false
-            state.notebook.activeContentItem = null
-            state.appmode.rightsidemode = 'default'
+        DUPLICATE_CURRENT_NOTE(state){
+            const currentNote = getNoteBook(state.notebook.notes, state.notebook.activeNote)
+            const newNote = {...currentNote}
+            // ...
+            newNote.id = null
+            newNote.local_id = uuid4()
+            newNote.title = `${newNote.title}-copy`
+            state.notebook.notes.push(newNote)
+            // ...
+            set_active_note(state, newNote)
         },
+
+        SET_ACTIVE_NOTE: (state, note) => set_active_note(state, note),
 
         SET_EDIT_MODE(state, mode){
             state.appmode.noteseditmode = mode
-            if (mode===false){
+            
+            if (!mode){
                 state.notebook.activeContentItem = null
                 state.appmode.rightsidemode = 'default'
+                // do syncing
+            }else{
+                const note = getNoteBook(state.notebook.notes, state.notebook.activeNote)
+                note.synced = false
             }
         },
         
@@ -81,6 +97,16 @@ export const store = createStore({
             }
         },
 
+        DELETE_CURRENT_NOTE(state){
+            state.notebook.notes = state.notebook.notes.filter(
+                (note)=>note.local_id!==state.notebook.activeNote
+            )
+            state.notebook.activeNote = null
+            state.notebook.activeContentItem = null
+            state.appmode.noteseditmode = false
+            state.appmode.rightsidemode = 'default'
+        },
+
         UPDATE_ACTIVE_NOTE_CONTENT_ITEM(state, payload){
             const id = payload.id
             const data = payload.data
@@ -96,18 +122,13 @@ export const store = createStore({
             Object.entries(data).forEach(kv => {
                 item[kv[0]] = kv[1]
             })
+
+            note.synced = false
         }
     },
     actions: {
         setNoteListMode(context, name){
             context.commit('SET_NOTE_LIST_MODE', name)
-        },
-
-        addNewTag(context, name){
-            const tag = name.trim()
-            if (tag) {
-                context.commit("ADD_TAG", tag)
-            }
         },
 
         newNote(context, title){

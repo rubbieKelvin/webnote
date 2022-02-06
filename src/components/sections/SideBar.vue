@@ -49,33 +49,30 @@
                 </div>
             </div>
         </div>
-        <!-- ... -->
-        <div class="flex flex-col gap-3 flex-grow">
-            <div class="flex">
-                <h2 class="flex-grow sec-title font-dm">Tags</h2>
-                <svg @click="toggleTagBox()" class=" text-gray-400 cursor-pointer hover:text-accent" width="22" height="22" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M9 3V15M15 9L3 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </div>
-            <div :class="{'h-0 p-0 hidden': !show_tag_box}" class="flex">
-                <input @keydown.enter="addTag()" ref="tagInput" autofocus class=" transition-all outline-accent px-2 py-2 rounded-md flex-grow" type="text" name="" placeholder="Enter tag name..." id="">
-            </div>
-            <!-- ... -->
-            <div class="scrollbar flex flex-col gap-1 flex-grow h-0 overflow-y-hidden hover:overflow-y-auto">
-                
-                <div @click="setNoteListMode(`tag:${tag}`)" :class="{'quick-link-active': appmode.noteslistmode==`tag:${tag}`}" :key="tag" v-for="tag in tags" class="quick-link font-poppins">
-                    <svg width="22" height="22" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M10.125 2.75782L9.5627 3.25412C9.573 3.26579 9.58366 3.27714 9.59467 3.28815L10.125 2.75782ZM15.2422 10.125L14.7459 9.5627C14.7342 9.573 14.7229 9.58366 14.7119 9.59467L15.2422 10.125ZM15.375 8.00782L15.9373 7.51152C15.927 7.49984 15.9163 7.48849 15.9053 7.47749L15.375 8.00782ZM8.00782 15.375L7.47749 15.9053C7.48849 15.9163 7.49984 15.927 7.51152 15.9373L8.00782 15.375ZM9.99218 15.375L10.4885 15.9373C10.5002 15.927 10.5115 15.9163 10.5225 15.9053L9.99218 15.375ZM2.75782 10.125L3.28815 9.59467L3.27163 9.57815L3.25412 9.5627L2.75782 10.125ZM5.25 4.5C4.83579 4.5 4.5 4.83579 4.5 5.25C4.5 5.66421 4.83579 6 5.25 6V4.5ZM5.2575 6C5.67171 6 6.0075 5.66421 6.0075 5.25C6.0075 4.83579 5.67171 4.5 5.2575 4.5V6ZM3 5.25C3 4.00736 4.00736 3 5.25 3V1.5C3.17893 1.5 1.5 3.17893 1.5 5.25H3ZM3 9V5.25H1.5V9H3ZM5.25 3H9V1.5H5.25V3ZM9 3C9.2239 3 9.42417 3.09717 9.5627 3.25412L10.6873 2.26152C10.2761 1.79565 9.67212 1.5 9 1.5V3ZM15 9C15 9.2239 14.9028 9.42417 14.7459 9.5627L15.7385 10.6873C16.2044 10.2761 16.5 9.67212 16.5 9H15ZM14.8127 8.50412C14.9298 8.63678 15 8.80928 15 9H16.5C16.5 8.42989 16.287 7.9077 15.9373 7.51152L14.8127 8.50412ZM9 15C8.80928 15 8.63678 14.9298 8.50412 14.8127L7.51152 15.9373C7.9077 16.287 8.42989 16.5 9 16.5V15ZM9.49588 14.8127C9.36322 14.9298 9.19072 15 9 15V16.5C9.57011 16.5 10.0923 16.287 10.4885 15.9373L9.49588 14.8127ZM3.25412 9.5627C3.09717 9.42417 3 9.2239 3 9H1.5C1.5 9.67212 1.79565 10.2761 2.26152 10.6873L3.25412 9.5627ZM9.59467 3.28815L14.8447 8.53815L15.9053 7.47749L10.6553 2.22749L9.59467 3.28815ZM8.53815 14.8447L3.28815 9.59467L2.22749 10.6553L7.47749 15.9053L8.53815 14.8447ZM14.7119 9.59467L9.46185 14.8447L10.5225 15.9053L15.7725 10.6553L14.7119 9.59467ZM5.25 6H5.2575V4.5H5.25V6Z" fill="currentColor"/>
+        <div class="flex-grow"/>
+
+        <a target="blank" href="https://rubbiekelvin.netlify.app/" class="flex gap-2 hover:bg-gray-200 cursor-pointer text-gray-800 border border-gray-300 rounded-md p-2">
+            <div class="flex items-center">
+                <div class="bg-danger bg-opacity-20 p-1 rounded-full relative">
+                    <svg class=" text-danger" width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4.31802 6.81802C2.56066 8.57538 2.56066 11.4246 4.31802 13.182L12.0001 20.864L19.682 13.182C21.4393 11.4246 21.4393 8.57538 19.682 6.81802C17.9246 5.06066 15.0754 5.06066 13.318 6.81802L12.0001 8.13609L10.682 6.81802C8.92462 5.06066 6.07538 5.06066 4.31802 6.81802Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
-                    <p>{{tag}}</p>
+                    <div class="absolute top-0 right-0 left-0 bottom-0 flex items-center justify-center">
+                        <span class="animate-ping bg-danger bg-opacity-50 p-2 rounded-full"/>
+                    </div>
                 </div>
             </div>
-
-        </div>
-
-        <div class="flex">
-            <a href="https://rubbiekelvin.netlify.app/" class=" text-gray-400 text-xs hover:text-text">stuffsbyrubbie</a>
-        </div>
+            <div class=" flex flex-col">
+                <h1 class="text-sm font-medium">By me a coffee</h1>
+                <p class=" text-gray-700 text-xs">This project is free, if you can, drop somthing for boys</p>
+                <p class=" text-blue-400 text-xs">rubbiekelvin</p>
+            </div>
+            <div>
+                <svg class="text-gray-400" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8.33325 4.99999H4.99992C4.07944 4.99999 3.33325 5.74619 3.33325 6.66666V15C3.33325 15.9205 4.07944 16.6667 4.99992 16.6667H13.3333C14.2537 16.6667 14.9999 15.9205 14.9999 15V11.6667M11.6666 3.33333H16.6666M16.6666 3.33333V8.33333M16.6666 3.33333L8.33325 11.6667" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+        </a>
     </div>
 </template>
 

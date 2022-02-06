@@ -21,7 +21,6 @@
                     <path d="M182.942 95.4899C182.745 94.7285 182.391 94.0166 181.903 93.3997C181.473 92.88 180.915 92.4814 180.283 92.2431C178.921 91.7731 177.44 91.7731 176.078 92.2431C175.448 92.4799 174.891 92.8789 174.464 93.3997C173.971 94.0136 173.617 94.7266 173.425 95.4899C173.162 96.518 173.04 97.5768 173.06 98.6377V101.161C173.039 102.224 173.163 103.286 173.431 104.315C173.625 105.084 173.982 105.803 174.476 106.424C174.906 106.949 175.464 107.354 176.097 107.599C177.452 108.085 178.934 108.085 180.289 107.599C180.918 107.353 181.472 106.948 181.897 106.424C182.384 105.8 182.736 105.082 182.93 104.315C183.192 103.285 183.315 102.224 183.295 101.161H183.307V98.6377C183.328 97.5768 183.205 96.518 182.942 95.4899V95.4899ZM180.685 101.538C180.694 102.211 180.64 102.884 180.524 103.548C180.446 104.02 180.285 104.474 180.048 104.89C179.866 105.21 179.596 105.472 179.269 105.644C178.934 105.806 178.565 105.886 178.193 105.879C177.821 105.885 177.453 105.804 177.117 105.644C176.786 105.471 176.51 105.21 176.319 104.89C176.077 104.475 175.91 104.021 175.824 103.548C175.698 102.886 175.64 102.212 175.651 101.538V98.2357C175.64 97.5639 175.696 96.8928 175.818 96.232C175.899 95.7688 176.065 95.3244 176.307 94.9209C176.498 94.6126 176.773 94.3641 177.098 94.2036C177.436 94.0567 177.8 93.981 178.168 93.981C178.536 93.981 178.9 94.0567 179.238 94.2036C179.566 94.3602 179.841 94.6096 180.03 94.9209C180.271 95.3245 180.437 95.7688 180.518 96.232C180.64 96.8927 180.696 97.5639 180.685 98.2357V101.538L180.685 101.538Z" fill="white"/>
                     </g>
                 </svg>
-
             </div>
         </template>
         <template v-else-if="$store.state.appmode.rightsidemode==='widget'">
@@ -40,38 +39,48 @@
 
 
             <div class="flex flex-col gap-4 flex-grow px-4">
+                <h1 class="font-medium font-dm text-gray-600">Position</h1>
+
+                <div class="flex gap-[1px] w-full bg-stroke border border-stroke rounded-md">
+                    <button @click="shiftContent(-1)" class=" bg-elevation hover:bg-gray-300 transition-colors duration-200 flex justify-center items-center h-[34px] rounded-l-md flex-grow" >
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5.25 8.25L9 4.5M9 4.5L12.75 8.25M9 4.5V13.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button @click="shiftContent(1)" class=" bg-elevation hover:bg-gray-300 transition-colors duration-200 flex justify-center items-center h-[34px] rounded-r-md flex-grow">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12.75 9.75L9 13.5M9 13.5L5.25 9.75M9 13.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>                   
+                </div>
+
                 <h1 class="font-medium font-dm text-gray-600">{{getActiveContentItem.type.toUpperCase()}}</h1>
 
                 <template v-if="getActiveContentItem.type.startsWith('text:')">
                     <div class="">
                         <p>Text type</p>
-                        <group-button label="" class="">
-                            <group-button-item class=" rounded-l-md" :class="{'text-white bg-accent hover:bg-accent': getActiveContentItem.type === types.text_paragraph}" title="paragraph" @click="updateContentItem(getActiveContentItem.id, {type: types.text_paragraph})">
+                        <div class="flex gap-[1px] w-full bg-stroke border border-stroke rounded-md">
+                            <button class="hover:bg-gray-300 transition-colors duration-200 flex justify-center items-center h-[34px] rounded-l-md flex-grow" :class="[(getActiveContentItem.type === types.text_paragraph) ? 'text-white bg-accent hover:bg-accent': 'bg-elevation']" title="paragraph" @click="updateContentItem(getActiveContentItem.id, {type: types.text_paragraph})">
                                 <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M5.125 7.49999C5.125 5.19881 6.99048 3.33333 9.29167 3.33333H15.125V4.99999H14.2917V16.6667H12.625V4.99999H10.9583V16.6667H9.29167V11.6667C6.99048 11.6667 5.125 9.80118 5.125 7.49999ZM9.29167 9.99999V4.99999C7.91095 4.99999 6.79167 6.11928 6.79167 7.49999C6.79167 8.88071 7.91095 9.99999 9.29167 9.99999Z" fill="currentColor"/>
                                 </svg>
-                            </group-button-item>
-                            <group-button-item :class="{'text-white bg-accent hover:bg-accent': getActiveContentItem.type === types.text_link}" title="link" @click="updateContentItem(getActiveContentItem.id, {type: types.text_link})">
+                            </button>
+                            <button class="hover:bg-gray-300 transition-colors duration-200 flex justify-center items-center h-[34px] flex-grow" :class="[(getActiveContentItem.type === types.text_link) ? 'text-white bg-accent hover:bg-accent': 'bg-elevation']" title="link" @click="updateContentItem(getActiveContentItem.id, {type: types.text_link})">
                                 <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M14.5417 14.1667H12.0417V12.5H14.5417C15.9224 12.5 17.0417 11.3807 17.0417 9.99999C17.0417 8.61928 15.9224 7.49999 14.5417 7.49999H12.0417V5.83333H14.5417C16.8429 5.83333 18.7084 7.69881 18.7084 9.99999C18.7084 12.3012 16.8429 14.1667 14.5417 14.1667ZM8.70835 14.1667H6.20835C3.90717 14.1667 2.04169 12.3012 2.04169 9.99999C2.04169 7.69881 3.90717 5.83333 6.20835 5.83333H8.70835V7.49999H6.20835C4.82764 7.49999 3.70835 8.61928 3.70835 9.99999C3.70835 11.3807 4.82764 12.5 6.20835 12.5H8.70835V14.1667ZM14.5417 10.8333H6.20835V9.16666H14.5417V10.8333Z" fill="currentColor"/>
                                 </svg>
-                            </group-button-item>
-                            <group-button-item :class="{'text-white bg-accent hover:bg-accent': getActiveContentItem.type === types.text_heading}" title="heading" @click="updateContentItem(getActiveContentItem.id, {type: types.text_heading})">
+                            </button>
+                            <button class="hover:bg-gray-300 transition-colors duration-200 flex justify-center items-center h-[34px] flex-grow" :class="[(getActiveContentItem.type === types.text_heading) ? 'text-white bg-accent hover:bg-accent': 'bg-elevation']" title="heading" @click="updateContentItem(getActiveContentItem.id, {type: types.text_heading})">
                                 <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M13.9583 9.16666V3.33333H15.625V16.6667H13.9583V10.8333H7.29167V16.6667H5.625V3.33333H7.29167V9.16666H13.9583Z" fill="currentColor"/>
                                 </svg>
-                            </group-button-item>
-                            <group-button-item class="rounded-r-md" :class="{'text-white bg-accent hover:bg-accent': getActiveContentItem.type === types.text_code}" :stroke="false" title="code" @click="updateContentItem(getActiveContentItem.id, {type: types.text_code})">
+                            </button>
+                            <button class="rounded-r-md hover:bg-gray-300 transition-colors duration-200 flex justify-center items-center h-[34px] flex-grow" :class="[(getActiveContentItem.type === types.text_code) ? 'text-white bg-accent hover:bg-accent': 'bg-elevation']" :stroke="false" title="code" @click="updateContentItem(getActiveContentItem.id, {type: types.text_code})">
                                 <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M9.20835 16.6667L12.5417 3.33333M15.875 6.66666L19.2084 9.99999L15.875 13.3333M5.87502 13.3333L2.54169 9.99999L5.87502 6.66666" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
-                            </group-button-item>
-                        </group-button>
-                    </div>
-
-                    <div v-if="getActiveContentItem.type == types.text_link">
-                        <p>Url</p>
-                        <input type="text" name="" id="" class="px-3 py-2 w-full rounded-md outline-accent" placeholder="https://example.com/">
+                            </button>
+                        </div>
                     </div>
                 </template>
             </div>
@@ -95,12 +104,20 @@ export default {
     },
     computed: {
         ...mapGetters([
-            'getActiveContentItem'
+            'getActiveContentItem',
+            'getActiveNote'
         ])
     }    ,
     methods: {
         updateContentItem(id, data){
             this.$store.commit('UPDATE_ACTIVE_NOTE_CONTENT_ITEM', {id, data})
+        },
+        shiftContent(direction){
+            const note = this.getActiveNote
+            const index = note.content.indexOf(this.getActiveContentItem)
+            const next = index + direction
+            if (next == -1 || next == note.content.length) return
+            [note.content[index], note.content[next]] = [note.content[next], note.content[index]]
         }
     }
 }
