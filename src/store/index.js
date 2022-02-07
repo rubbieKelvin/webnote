@@ -94,8 +94,12 @@ export const store = createStore({
         }
     },
     mutations: {
+        SET_SEARCH_FILTER(state, value){
+            state.searchFilter = value
+        },
         SET_NOTE_LIST_MODE(state, name){
             state.appmode.noteslistmode = name
+            state.searchFilter = ''
         },
 
         CREATE_NOTE(state, title){

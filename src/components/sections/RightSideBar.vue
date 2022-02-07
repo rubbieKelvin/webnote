@@ -25,11 +25,14 @@
             </div>
 
             <div v-else class="flex-grow flex flex-col gap-2 h-[80%] overflow-y-scroll scrollbar">
-                <div class="px-2" v-for="comment in getActiveNote.comments" :key="comment.id">
-                    <p class="text-gray-800">{{comment.author}}</p>
-                    <p class="text-xs text-gray-600">{{prettyDate(comment.createdAt)}}</p>
-                    <p class="text-sm select-text break-words">{{comment.text}}</p>
-                    <div class="h-[1px] mx-4 bg-gray-200"/>
+                <div class="px-2 flex gap-1" v-for="comment in getActiveNote.comments" :key="comment.id">
+                    <div class="w-8 h-8 rounded-full text-white flex items-center justify-center bg-orange-400">A</div>
+                    <div class="flex flex-col gap-1">
+                        <p class="text-gray-800">{{comment.author}}</p>
+                        <p class="text-xs text-gray-600">{{prettyDate(comment.createdAt)}}</p>
+                        <p class="text-sm select-text break-words">{{comment.text}}</p>
+                        <div class="h-[1px] mx-4 bg-gray-200"/>
+                    </div>
                 </div>
             </div>
 

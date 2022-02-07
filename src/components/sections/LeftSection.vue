@@ -5,7 +5,7 @@
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                <input class="flex-grow h-full w-[60%] bg-transparent outline-none" placeholder="Search..." type="text">
+                <input :value="$store.state.searchFilter" @input="$store.commit('SET_SEARCH_FILTER', $event.target.value)" class="flex-grow h-full w-[60%] bg-transparent outline-none" placeholder="Search..." type="text">
             </div>
             <div class="">
                 <button title="create new note [Ctrl-Alt-N]" @click="new_note_modal_visible=true, $refs.noteTitleInput.focus()" class="bg-accent text-white h-11 w-11 rounded-full flex items-center justify-center">
@@ -14,6 +14,10 @@
                     </svg>
                 </button>
             </div>
+        </div>
+
+        <div v-if="$store.state.searchFilter.trim().length>0" class="px-2 py-1 bg-accent bg-opacity-20 text-accent text-sm">
+            <p>Search results for "<b>{{$store.state.searchFilter.trim()}}</b>"</p>
         </div>
 
         <!-- new-note -->
@@ -40,23 +44,25 @@
 
         <div class="text-text h-0 scrollbar overflow-y-hidden hover:overflow-y-auto flex flex-col flex-grow">
             <!-- item -->
-            <div @keydown.down="$refs.note_delegate[notes.indexOf(note)+1]?.focus()" @keydown.up="$refs.note_delegate[notes.indexOf(note)-1]?.focus()" ref="note_delegate" v-for="note in notes" :class="[($store.state.notebook.activeNote==note.local_id) ? 'bg-accent bg-opacity-10':'bg-white', (note.trash)?'':'hover:bg-gray-100']" :tabindex="0" @click="setActiveNote(note)" @keypress.enter="setActiveNote(note)" :key="note.id || note.local_id" class="px-2 pt-2 cursor-pointer group flex flex-col gap-2 outline-none focus:border-accent border-transparent border-l-4">
-                <h3 class="font-poppins break-all">{{note.title}}</h3>
-                <!-- <p class=" text-sm">But with some giudiance and explanation, we might get it right...</p> -->
-                <div class="flex flex-row gap-3 items-center">
-                    <p class="text-sm flex-grow font-bold text-gray-400">{{prettyDate(note.last_edited)}}</p>
-                    
-                    <svg class="text-accent" v-if="note.favorite" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M3.23851 4.73851C1.9205 6.05653 1.9205 8.19347 3.23851 9.51149L9.00004 15.273L14.7615 9.51149C16.0795 8.19347 16.0795 6.05653 14.7615 4.73851C13.4435 3.4205 11.3065 3.4205 9.98851 4.73852L9.00004 5.72707L8.01149 4.73851C6.69347 3.4205 4.55653 3.4205 3.23851 4.73851Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </div>
+            <template v-for="note in notes" :key="note.id || note.local_id">
+                <div v-if="note.title.includes($store.state.searchFilter?.trim())" @keydown.down="$refs.note_delegate[notes.indexOf(note)+1]?.focus()" @keydown.up="$refs.note_delegate[notes.indexOf(note)-1]?.focus()" ref="note_delegate" :class="[($store.state.notebook.activeNote==note.local_id) ? 'bg-accent bg-opacity-10':'bg-white', (note.trash)?'':'hover:bg-gray-100']" :tabindex="0" @click="setActiveNote(note)" @keypress.enter="setActiveNote(note)" class="px-2 pt-2 cursor-pointer group flex flex-col gap-2 outline-none focus:border-accent border-transparent border-l-4">
+                    <h3 class="font-poppins break-all">{{note.title}}</h3>
+                    <!-- <p class=" text-sm">But with some giudiance and explanation, we might get it right...</p> -->
+                    <div class="flex flex-row gap-3 items-center">
+                        <p class="text-sm flex-grow font-bold text-gray-400">{{prettyDate(note.last_edited)}}</p>
+                        
+                        <svg class="text-accent" v-if="note.favorite" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3.23851 4.73851C1.9205 6.05653 1.9205 8.19347 3.23851 9.51149L9.00004 15.273L14.7615 9.51149C16.0795 8.19347 16.0795 6.05653 14.7615 4.73851C13.4435 3.4205 11.3065 3.4205 9.98851 4.73852L9.00004 5.72707L8.01149 4.73851C6.69347 3.4205 4.55653 3.4205 3.23851 4.73851Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
 
-                <div v-if="note.trash" class="flex gap-2 h-0 overflow-clip group-focus:h-auto hover:h-auto group">
-                    <button @click="delNote(note)" class=" flex flex-grow py-2 bg-danger text-white justify-center items-center rounded-md">Delete Permanetly</button>
-                    <button @click="updateNote(note, {trash: false})" class=" flex flex-grow py-2 bg-gray-100 text-text justify-center items-center rounded-md">Restore</button>
+                    <div v-if="note.trash" class="flex gap-2 h-0 overflow-clip group-focus:h-auto hover:h-auto group">
+                        <button @click="delNote(note)" class=" flex flex-grow py-2 bg-danger hover:bg-red-500 text-white justify-center items-center rounded-md">Delete Permanetly</button>
+                        <button @click="updateNote(note, {trash: false})" class=" flex flex-grow py-2 bg-gray-100 hover:bg-green-500 hover:text-white transition-colors duration-200 text-text justify-center items-center rounded-md">Restore</button>
+                    </div>
+                    <div/>
                 </div>
-                <div/>
-            </div>
+            </template>
             <div v-if="notes.length===0 && !new_note_modal_visible" class="flex-grow flex flex-col items-center justify-center gap-3">
                 <svg width="200" height="200" viewBox="0 0 280 280" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g opacity="0.2">

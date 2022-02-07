@@ -3,7 +3,7 @@
         <!-- ... -->
         <profile-banner class=""/>
         <!-- ... -->
-        <div class="flex flex-col gap-3">
+        <div class="flex flex-col gap-3 flex-grow">
             <div class=" px-2">
                 <h2 class="sec-title font-dm">Quick Links</h2>
             </div>
@@ -41,7 +41,6 @@
                 </div>
             </div>
         </div>
-        <div class="flex-grow"/>
 
         <a target="blank" href="https://rubbiekelvin.netlify.app/" class="flex gap-2 hover:bg-gray-200 cursor-pointer text-gray-800 border border-gray-300 rounded-md p-2">
             <div class="flex items-center">
@@ -58,11 +57,6 @@
                 <h1 class="text-sm font-medium">By me a coffee</h1>
                 <p class=" text-gray-700 text-xs">This project is free, if you can, drop somthing for boys</p>
                 <p class=" text-blue-400 text-xs">rubbiekelvin</p>
-            </div>
-            <div>
-                <svg class="text-gray-400" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M8.33325 4.99999H4.99992C4.07944 4.99999 3.33325 5.74619 3.33325 6.66666V15C3.33325 15.9205 4.07944 16.6667 4.99992 16.6667H13.3333C14.2537 16.6667 14.9999 15.9205 14.9999 15V11.6667M11.6666 3.33333H16.6666M16.6666 3.33333V8.33333M16.6666 3.33333L8.33325 11.6667" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
             </div>
         </a>
     </div>
