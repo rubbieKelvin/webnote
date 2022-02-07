@@ -2,12 +2,12 @@
     <div class="flex-grow flex flex-col gap-2">
         <!-- header -->
         <div class="flex px-2">
-            <div class="flex flex-grow flex-col">
+            <div class="flex flex-grow flex-col w-[70%]">
                 <!-- ... -->
-                <input v-model="noteTitle" class=" h-14 outline-accent font-poppins text-5xl font-bold w-full" v-if="noteseditmode" type="text" placeholder="Enter title..."> 
-                <h1 v-else class="font-poppins text-4xl font-bold">{{getActiveNote.title}}</h1>
+                <input v-model="noteTitle" class="w-full h-14 outline-accent font-poppins text-5xl font-bold flex-grow" v-if="noteseditmode" type="text" placeholder="Enter title..."> 
+                <h1 v-else class="font-poppins break-all text-4xl w-full flex-grow font-bold">{{getActiveNote.title}}</h1>
                 <!-- ... -->
-                <div>
+                <div class="flex-grow">
                     <div class="h-8 items-center flex gap-4">
                         <p class=" select-none text-gray-700">{{getActiveNote.author}}</p>
                         <button v-if="noteseditmode" class="text-white bg-accent rounded-md flex items-center justify-center w-6 h-6">+</button>
@@ -15,7 +15,9 @@
 
                 </div>
             </div>
-            <p v-if="!noteseditmode" class="flex-grow min-w-[15%] select-none text-sm text-gray-600">last edited {{prettyDate(getActiveNote.last_edited)}}</p>
+            <p v-if="!noteseditmode" class="flex-grow select-none text-sm text-right text-gray-600">
+                last edited {{prettyDate(getActiveNote.last_edited)}}
+            </p>
             
         </div>
         
@@ -193,7 +195,7 @@
                                         'w-[2.5rem]': subitem.indent==2,
                                         'w-[3.75rem]': subitem.indent==3,
                                         'w-[0px]': subitem.indent==0,
-                                    }" class="w-5 bg-gray-200 h-[2px] rounded-md transition-all duration-200"/>
+                                    }" class="bg-gray-200 h-[2px] rounded-md transition-all duration-200"/>
                                     <!-- content -->
                                     <div class="flex flex-grow gap-3 items-center">
                                         <input @click="$store.commit('SET_CURRENT_CONTENT_ITEM', item.id)" class="flex-grow bg-transparent outline-none" v-model="subitem.value" type="text" name="" id="">
@@ -256,7 +258,7 @@
                                         'w-[2.5rem]': subitem.indent==2,
                                         'w-[3.75rem]': subitem.indent==3,
                                         'w-[0px]': subitem.indent==0,
-                                    }" class="w-5 h-[2px] rounded-md transition-all duration-200"/>
+                                    }" class="h-[2px] rounded-md transition-all duration-200"/>
                                     <!-- content -->
                                     <div class="flex gap-3 h-8 items-center">
                                         <!-- check state -->

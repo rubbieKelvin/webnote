@@ -8,8 +8,9 @@
                 <h2 class="text-lg">Comments</h2>
             </div>
             <div class="bg-stroke h-[1px] mx-2"/>
-            <div class="flex-grow flex items-center justify-center">
-                <svg width="280" height="280" viewBox="0 0 280 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+            <div v-if="!getActiveNote || (getActiveNote.comments.length==0)" class="flex-grow flex items-center justify-center">
+                <svg width="200" height="200" viewBox="0 0 280 280" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g opacity="0.2">
                     <path d="M173.464 58.0226C173.464 58.0226 144.088 95.2329 97.085 73.038C50.0821 50.8431 3.07991 110.9 43.5539 147.458C84.0279 184.016 44.4211 204.104 71.9179 226.509C103.17 251.973 130.378 200.336 155.185 212.087C209.935 238.021 250.496 227.754 241.357 197.725C225.314 145.012 204.799 141.583 220.467 114.165C236.134 86.7464 201.556 29.7371 173.464 58.0226Z" fill="#727272"/>
                     <path d="M123.275 174.775C123.275 200.042 143.755 220.522 169.022 220.522C174.906 220.532 180.736 219.4 186.188 217.187C186.3 217.201 186.413 217.207 186.526 217.207H206.549C207.193 217.208 207.831 217.081 208.427 216.835C209.022 216.588 209.563 216.227 210.019 215.771C210.474 215.315 210.836 214.774 211.082 214.179C211.329 213.584 211.455 212.945 211.455 212.301V191.894C213.654 186.455 214.779 180.641 214.77 174.775C214.77 149.508 194.29 129.027 169.022 129.027C143.755 129.027 123.275 149.508 123.275 174.775Z" fill="black"/>
@@ -22,6 +23,16 @@
                     </g>
                 </svg>
             </div>
+
+            <div v-else class="flex-grow flex flex-col gap-2 h-[80%] overflow-y-scroll scrollbar">
+                <div class="px-2" v-for="comment in getActiveNote.comments" :key="comment.id">
+                    <p class="text-gray-800">{{comment.author}}</p>
+                    <p class="text-xs text-gray-600">{{prettyDate(comment.createdAt)}}</p>
+                    <p class="text-sm select-text break-words">{{comment.text}}</p>
+                    <div class="h-[1px] mx-4 bg-gray-200"/>
+                </div>
+            </div>
+
         </template>
         <template v-else-if="$store.state.appmode.rightsidemode==='widget'">
             <div class="text-text flex gap-4 h-14 items-center px-4">
@@ -29,7 +40,7 @@
                     <path d="M6.70946 14.857L7.25405 15.1482C8.09801 15.5994 9.0405 15.8348 9.99749 15.8333L10 15.8333C13.2218 15.8333 15.8333 13.2218 15.8333 10C15.8333 6.77822 13.2218 4.16667 10 4.16667C6.77823 4.16667 4.16668 6.77822 4.16668 10V10.0025C4.16523 10.9595 4.4006 11.902 4.85181 12.746L5.14296 13.2905L4.69528 15.3047L6.70946 14.857ZM2.50001 17.5L3.38201 13.5317C2.80116 12.4453 2.49815 11.232 2.50001 10C2.50001 5.85775 5.85776 2.5 10 2.5C14.1423 2.5 17.5 5.85775 17.5 10C17.5 14.1422 14.1423 17.5 10 17.5C8.76802 17.5018 7.55472 17.1988 6.46826 16.618L2.50001 17.5Z" fill="currentColor"/>
                 </svg>
                 <h2 class="text-lg flex-grow">Widget</h2>
-                <button class="hover:text-danger text-gray-600">
+                <button class="hover:text-danger text-gray-600" @click="$store.commit('DELETE_CURRENT_NOTE_CONTENT_ITEM')">
                     <svg width="22" height="22" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12.75 16.5H5.25C4.42157 16.5 3.75 15.8284 3.75 15V5.25H2.25V3.75H5.25V3C5.25 2.17157 5.92157 1.5 6.75 1.5H11.25C12.0784 1.5 12.75 2.17157 12.75 3V3.75H15.75V5.25H14.25V15C14.25 15.8284 13.5784 16.5 12.75 16.5ZM5.25 5.25V15H12.75V5.25H5.25ZM6.75 3V3.75H11.25V3H6.75ZM11.25 13.5H9.75V6.75H11.25V13.5ZM8.25 13.5H6.75V6.75H8.25V13.5Z" fill="currentColor"/>
                     </svg>
@@ -93,7 +104,7 @@
 import {mapGetters} from 'vuex'
 import GroupButton from '../controls/GroupButton.vue'
 import GroupButtonItem from '../controls/GroupButtonItem.vue'
-import {types} from '../../notes.js'
+import {types, parseAgoFromDateObj} from '../../notes.js'
 
 export default {
     components: {GroupButton, GroupButtonItem},
@@ -118,7 +129,8 @@ export default {
             const next = index + direction
             if (next == -1 || next == note.content.length) return
             [note.content[index], note.content[next]] = [note.content[next], note.content[index]]
-        }
+        },
+        prettyDate: (time) => parseAgoFromDateObj(time)
     }
 }
 </script>

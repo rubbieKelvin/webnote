@@ -13,20 +13,46 @@ import SideBar from '../components/sections/SideBar.vue'
 import LeftSection from '../components/sections/LeftSection.vue'
 import NoteSpace from '../components/sections/NoteSpace.vue'
 import RightSideBar from '../components/sections/RightSideBar.vue'
+import {contentPush} from '../store'
+import {makeText, makeList, makeImage} from '../notes.js'
 
 export default {
     components: {SideBar, LeftSection, NoteSpace, RightSideBar},
     mounted() {
         this._keyListener = function(e) {
-            if (e.key === "s" && (e.ctrlKey || e.metaKey)) {
+            const meta = (e.ctrlKey || e.metaKey)
+             if (e.key === "s" && meta) {
                 e.preventDefault() // present "Save Page" from getting triggered.
-                this.$store.commit("SET_EDIT_MODE", false)
-            }else if (e.key === "e" && (e.ctrlKey || e.metaKey)) {
+                if (this.$store.getters.getActiveNote){
+                    this.$store.commit("SET_EDIT_MODE", false)
+                }
+            }else if (e.key === "e" && meta) {
                 e.preventDefault()
-                this.$store.commit("SET_EDIT_MODE", true)
-            }else if (e.key === "d" && (e.ctrlKey || e.metaKey)) {
+                if (this.$store.getters.getActiveNote){
+                    this.$store.commit("SET_EDIT_MODE", true)
+                }
+            }else if (e.key === "d" && meta) {
                 e.preventDefault()
-                this.$store.commit("DUPLICATE_CURRENT_NOTE")
+                if (this.$store.getters.getActiveNote){
+                    this.$store.commit("DUPLICATE_CURRENT_NOTE")
+                }
+            }else if (e.key === "l" && meta && !e.altKey){
+                e.preventDefault()
+                const note = this.$store.getters.getActiveNote
+                if (note){
+                    this.$store.commit('UPDATE_ACTIVE_NOTE', {favorite: !note.favorite})
+                }
+            }else if (this.$store.getters.getActiveNote && this.$store.state.appmode.noteseditmode){
+                if (e.key === "t" && e.altKey && meta){
+                    e.preventDefault()
+                    contentPush(this.$store, makeText("Lorem ipsum..."))
+                }else if (e.key === "i" && e.altKey && meta){
+                    e.preventDefault()
+                    contentPush(this.$store, makeImage("/src/assets/images/bg.png"))
+                }else if (e.key === "l" && e.altKey && meta){
+                    e.preventDefault()
+                    contentPush(this.$store, makeList())
+                }
             }
         };
 

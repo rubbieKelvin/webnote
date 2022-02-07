@@ -1,14 +1,16 @@
 <template>
     <div class=" select-none flex gap-2 flex-col text-text flex-grow min-w-[20%] max-w-[20%] py-4">
-        <div class="px-2">
-            <div class=" group pl-3 bg-elevation flex rounded-full items-center gap-2">
-                <svg class=" group-focus:text-accent h-5 w-5" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M15.75 15.75L11.25 11.25M12.75 7.5C12.75 10.3995 10.3995 12.75 7.5 12.75C4.60051 12.75 2.25 10.3995 2.25 7.5C2.25 4.60051 4.60051 2.25 7.5 2.25C10.3995 2.25 12.75 4.60051 12.75 7.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <div class="px-2 flex gap-1">
+            <div class="flex h-11 gap-2 items-center rounded-full flex-grow px-2 bg-gray-100">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                <input class=" font-dm bg-transparent focus:outline-0 flex-grow" type="text" placeholder="Search notes...">
-                <button @click="new_note_modal_visible=true, $refs.noteTitleInput.focus()" class=" rounded-r-full bg-accent text-white w-12 h-12 items-center flex justify-center">
-                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M9 3V15M15 9L3 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <input class="flex-grow h-full w-[60%] bg-transparent outline-none" placeholder="Search..." type="text">
+            </div>
+            <div class="">
+                <button title="create new note [Ctrl-Alt-N]" @click="new_note_modal_visible=true, $refs.noteTitleInput.focus()" class="bg-accent text-white h-11 w-11 rounded-full flex items-center justify-center">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 4V20M20 12L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </button>
             </div>
@@ -37,24 +39,26 @@
         <!-- ... -->
 
         <div class="text-text h-0 scrollbar overflow-y-hidden hover:overflow-y-auto flex flex-col flex-grow">
-            <div @click="setActiveNote(note)" :key="note.id || note.local_id" v-for="note in notes" class="px-2 pt-2 cursor-pointer hover:bg-gray-100 flex bg-white flex-col gap-2">
-                <h3 class="font-poppins">{{note.title}}</h3>
+            <!-- item -->
+            <div @keydown.down="$refs.note_delegate[notes.indexOf(note)+1]?.focus()" @keydown.up="$refs.note_delegate[notes.indexOf(note)-1]?.focus()" ref="note_delegate" v-for="note in notes" :class="[($store.state.notebook.activeNote==note.local_id) ? 'bg-accent bg-opacity-10':'bg-white', (note.trash)?'':'hover:bg-gray-100']" :tabindex="0" @click="setActiveNote(note)" @keypress.enter="setActiveNote(note)" :key="note.id || note.local_id" class="px-2 pt-2 cursor-pointer group flex flex-col gap-2 outline-none focus:border-accent border-transparent border-l-4">
+                <h3 class="font-poppins break-all">{{note.title}}</h3>
                 <!-- <p class=" text-sm">But with some giudiance and explanation, we might get it right...</p> -->
                 <div class="flex flex-row gap-3 items-center">
-                    <p class="text-sm flex-grow font-bold text-gray-400">2m ago</p>
-                    <svg class=" text-accent" width="22" height="22" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M9.91667 9.91667H8.16667V8.75H9.91667C10.8832 8.75 11.6667 7.9665 11.6667 7C11.6667 6.0335 10.8832 5.25 9.91667 5.25H8.16667V4.08334H9.91667C11.5275 4.08334 12.8333 5.38917 12.8333 7C12.8333 8.61083 11.5275 9.91667 9.91667 9.91667ZM5.83333 9.91667H4.08333C2.4725 9.91667 1.16667 8.61083 1.16667 7C1.16667 5.38917 2.4725 4.08334 4.08333 4.08334H5.83333V5.25H4.08333C3.11684 5.25 2.33333 6.0335 2.33333 7C2.33333 7.9665 3.11684 8.75 4.08333 8.75H5.83333V9.91667ZM9.91667 7.58334H4.08333V6.41667H9.91667V7.58334Z" fill="currentColor"/>
-                    </svg>
-                    <svg class="text-accent" width="22" height="22" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M7 12.8333C6.35567 12.8333 5.83333 12.311 5.83333 11.6667H8.16666C8.16666 12.311 7.64433 12.8333 7 12.8333ZM11.6667 11.0833H2.33333V9.91667L3.5 9.33333V6.125C3.5 4.1055 4.32892 2.79592 5.83333 2.43833V1.16667H8.16666V2.43833C9.67108 2.79533 10.5 4.10433 10.5 6.125V9.33333L11.6667 9.91667V11.0833ZM7 3.35417C6.28814 3.3082 5.60162 3.62675 5.17708 4.2C4.81398 4.77433 4.63583 5.44622 4.66667 6.125V9.91667H9.33333V6.125C9.36413 5.44623 9.18598 4.77434 8.82291 4.2C8.39837 3.62675 7.71186 3.3082 7 3.35417Z" fill="currentColor"/>
+                    <p class="text-sm flex-grow font-bold text-gray-400">{{prettyDate(note.last_edited)}}</p>
+                    
+                    <svg class="text-accent" v-if="note.favorite" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3.23851 4.73851C1.9205 6.05653 1.9205 8.19347 3.23851 9.51149L9.00004 15.273L14.7615 9.51149C16.0795 8.19347 16.0795 6.05653 14.7615 4.73851C13.4435 3.4205 11.3065 3.4205 9.98851 4.73852L9.00004 5.72707L8.01149 4.73851C6.69347 3.4205 4.55653 3.4205 3.23851 4.73851Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </div>
-                <div v-if="note !== notes.slice(-1)[0]" class="bg-stroke" style="height: 1px;"/>
-                <!-- padding -->
-                <div v-if="note === notes.slice(-1)[0]"/>
+
+                <div v-if="note.trash" class="flex gap-2 h-0 overflow-clip group-focus:h-auto hover:h-auto group">
+                    <button @click="delNote(note)" class=" flex flex-grow py-2 bg-danger text-white justify-center items-center rounded-md">Delete Permanetly</button>
+                    <button @click="updateNote(note, {trash: false})" class=" flex flex-grow py-2 bg-gray-100 text-text justify-center items-center rounded-md">Restore</button>
+                </div>
+                <div/>
             </div>
             <div v-if="notes.length===0 && !new_note_modal_visible" class="flex-grow flex flex-col items-center justify-center gap-3">
-                <svg width="280" height="280" viewBox="0 0 280 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg width="200" height="200" viewBox="0 0 280 280" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g opacity="0.2">
                     <path d="M101.791 242.485C116.648 251.44 127.247 247.723 131.304 240.542C139.151 226.655 165.242 198.258 206.587 188.66C261.348 175.948 249.912 142.196 216.248 124.484C182.585 106.773 157.414 82.2652 161.224 55.6177C165.034 28.9703 127.288 19.784 110.502 71.0448C99.6545 104.171 80.2151 113.046 67.819 115.179C56.1358 117.19 43.3559 119.713 37.1238 129.797C29.5616 142.033 32.2005 154.411 63.8619 162.9C108.729 174.93 68.4911 222.413 101.791 242.485Z" fill="#717171"/>
                     <path d="M63.1905 184.424C63.8193 184.064 70.9156 181.06 106.219 197.518C106.116 197.658 106.072 197.724 106.072 197.724C106.072 197.724 69.3711 210.084 62.1803 194.858C60.033 190.325 60.6483 187.203 63.1292 184.459L63.1905 184.424Z" fill="black"/>
@@ -65,8 +69,8 @@
                     <path d="M169.357 122.945C169.197 122.944 169.042 122.89 168.918 122.789C168.794 122.689 168.708 122.549 168.674 122.393C168.549 121.828 167.994 120.156 167.113 119.908C166.233 119.659 164.506 120.624 163.807 121.13C163.657 121.239 163.47 121.284 163.286 121.254C163.103 121.225 162.939 121.124 162.83 120.974C162.721 120.823 162.676 120.636 162.706 120.453C162.735 120.269 162.836 120.105 162.986 119.996C163.262 119.797 165.728 118.062 167.493 118.56C169.335 119.08 169.975 121.788 170.041 122.095C170.064 122.198 170.063 122.304 170.039 122.406C170.015 122.507 169.968 122.603 169.902 122.684C169.837 122.765 169.754 122.831 169.659 122.876C169.565 122.921 169.461 122.945 169.357 122.945H169.357Z" fill="white"/>
                     </g>
                 </svg>
-                <h1 class="text-sm text-gray-500">You dont have any notes</h1>
-                <button @click="new_note_modal_visible=true" class="text-sm px-5 rounded-md text-white py-1 bg-accent">Create</button>
+                <h1 class="text-sm text-gray-500">You dont have any notes here</h1>
+                <button v-if="$store.state.appmode.noteslistmode==='notes'" @click="new_note_modal_visible=true, $refs.noteTitleInput.focus()" class="text-sm px-5 rounded-md text-white py-1 bg-accent">Create</button>
             </div>
         </div>
     </div>
@@ -74,23 +78,46 @@
 
 
 <script>
-import {mapState, mapActions} from 'vuex'
+import {mapActions} from 'vuex'
+import {parseAgoFromDateObj} from '../../notes'
+import {updateNote, deleteNote} from '../../store'
 
 export default {
-    data(){
-        return {
-            new_note_modal_visible: false
+    mounted(){
+        this._keyListener = function(e){
+            const meta = (e.ctrlKey || e.metaKey)
+            if (e.key=='n' && meta && e.altKey) {
+                e.preventDefault()
+                this.$store.commit("SET_NEW_NOTE_MODAL", true)
+                this.$refs.noteTitleInput.focus()
+            }
         }
+        document.addEventListener('keydown', this._keyListener.bind(this))
+    },
+    beforeDestroy(){
+        document.addEventListener('keydown', this._keyListener)
     },
     computed: {
-        ...mapState({
-            notes: state => state.notebook.notes
-        })
+        notes(){
+            return this.$store.getters.getNotes
+        },
+        new_note_modal_visible: {
+            get(){
+                return this.$store.state.appmode.newnotemodalvisible
+            },
+            set(value){
+                this.$store.commit("SET_NEW_NOTE_MODAL", value)
+            }
+        }
     },
     methods: {
         ...mapActions([
             'setActiveNote'
         ]),
+        updateNote,
+        delNote(note){
+            deleteNote(this.$store.state, note)
+        },
         createNote(){
             const input = this.$refs.noteTitleInput
             const title = input.value.trim()
@@ -99,7 +126,8 @@ export default {
                 this.new_note_modal_visible = false
                 this.$store.dispatch('newNote', title)
             }
-        }
+        },
+        prettyDate: (time) => parseAgoFromDateObj(time)
     }
 }
 </script>

@@ -30,7 +30,7 @@ export const parseAgoFromDateObj = datetime => {
         return `${Math.floor(hours)} hours ago`
     }
 
-    if (minutes>=1) return `${Math.floor(minutes)} minute ago`
+    if (minutes>=1) return `${Math.floor(minutes)} minutes ago`
     return 'few seconds ago'
 }
 
@@ -49,14 +49,17 @@ export const createNote = (title) => {
         id: null,   // not on the server yet
         local_id: uuid4(),   // fallback id
         title,
-        tags: [],
         last_edited: new Date(),
+        created: new Date(),
         content: [],
         author: "anonymous",
         summary: "",
+        collaborators: [],
         favorite: false,
         reminder: null,
-        synced: false
+        synced: false,
+        comments: [],
+        trash: false
     }
 }
 
@@ -92,5 +95,15 @@ export const makeListItem = value => {
         value,
         listType: 'normal', // normal or checklist
         checked: false
+    }
+}
+
+
+export const makeComment = (author, text) => {
+    return {
+        id: uuid4(),
+        text,
+        author,
+        createdAt: new Date()
     }
 }

@@ -1,6 +1,6 @@
 <template>
-  <div>
-      <router-link to="/app">Got to app</router-link>
+  <div class="flex items-center min-h-screen justify-center">
+      <router-link to="/app" class="text-blue-500 hover:underline">Go to app</router-link>
   </div>
 </template>
 
