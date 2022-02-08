@@ -14,10 +14,19 @@ import NoteSpace from '../components/sections/NoteSpace.vue'
 import RightSideBar from '../components/sections/RightSideBar.vue'
 import {contentPush} from '../store'
 import {makeText, makeList, makeImage} from '../notes.js'
+import {dbGetAllNotes} from '../dbservice'
 
 export default {
     components: {SideBar, LeftSection, NoteSpace, RightSideBar},
-    mounted() {
+    async mounted() {
+        // load notes
+        const notes = await dbGetAllNotes()
+        this.$store.commit('WRITE_ALL_NOTES', notes)
+
+        // timeout for saving
+        this.backupTimerId = window.setInterval(this.backupUnsynced, 5000)
+        
+        // set listeners
         this._keyListener = function(e) {
             const meta = (e.ctrlKey || e.metaKey)
              if (e.key === "s" && meta) {
@@ -59,7 +68,19 @@ export default {
     },
     beforeDestroy() {
         document.removeEventListener('keydown', this._keyListener);
+        window.clearInterval(this.backupTimerId)
+    },
+    methods: {
+        backupUnsynced(){
+            // look for any note with sync= false
+            const notes = this.$store.state.notebook.notes
+            notes.forEach(function(note){
+                if (!note.synced){
+                    // do cloud backup
+                    // ...
+                }
+            })
+        }
     }
-
 }
 </script>

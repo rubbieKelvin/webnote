@@ -1,4 +1,5 @@
 import {v4 as uuid4} from 'uuid'
+import { dbSetNote } from "./dbservice";
 
 export const parseAgoFromDateObj = datetime => {
     const now = new Date()
@@ -45,7 +46,7 @@ export const types = {
 }
 
 export const createNote = (title) => {
-    return {
+    const res = {
         id: null,   // not on the server yet
         local_id: uuid4(),   // fallback id
         title,
@@ -61,6 +62,8 @@ export const createNote = (title) => {
         comments: [],
         trash: false
     }
+    dbSetNote(res)
+    return res
 }
 
 export const makeText = text => {

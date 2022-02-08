@@ -1,6 +1,7 @@
 import { createStore } from "vuex";
 import {createNote} from '../notes.js'
 import {v4 as uuid4} from 'uuid'
+import {dbSetNote, dbRemoveNote} from '../dbservice'
 
 const filterTypes = {
     allNotes: 'allNotes',
@@ -96,6 +97,9 @@ export const store = createStore({
         }
     },
     mutations: {
+        WRITE_ALL_NOTES(state, notes){
+            state.notebook.notes = notes
+        },
         SET_SEARCH_FILTER(state, value){
             state.searchFilter = value
         },
@@ -119,6 +123,7 @@ export const store = createStore({
             newNote.title = `${newNote.title}-copy`
             state.notebook.notes.push(newNote)
             // ...
+            dbSetNote(newNote)
             set_active_note(state, newNote)
         },
 
@@ -135,6 +140,7 @@ export const store = createStore({
                 const note = getNoteBook(state.notebook.notes, state.notebook.activeNote)
                 note.synced = false
                 note.last_edited = new Date()
+                dbSetNote(note)
             }
         },
         
@@ -154,12 +160,14 @@ export const store = createStore({
                     notebook[kv[0]] = kv[1]
                 })
             }
+            dbSetNote(note)
         },
 
         DELETE_CURRENT_NOTE(state){
             state.notebook.notes = state.notebook.notes.filter(
                 (note)=>note.local_id!==state.notebook.activeNote
             )
+            dbRemoveNote(state.notebook.activeNote)
             state.notebook.activeNote = null
             state.notebook.activeContentItem = null
             state.appmode.noteseditmode = false
@@ -196,6 +204,7 @@ export const store = createStore({
 
             note.synced = false
             note.last_edited = new Date()
+            dbSetNote(note)
         },
         SET_NEW_NOTE_MODAL(state, value){
             state.appmode.newnotemodalvisible = value
@@ -205,6 +214,7 @@ export const store = createStore({
             const note = getNoteBook(store.notebook.notes, store.notebook.activeNote)
             note.comments.push(value)
             note.synced = false
+            dbSetNote(note)
         }
     },
     actions: {
