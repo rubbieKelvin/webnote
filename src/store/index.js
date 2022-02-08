@@ -160,7 +160,7 @@ export const store = createStore({
                     notebook[kv[0]] = kv[1]
                 })
             }
-            dbSetNote(note)
+            dbSetNote(notebook)
         },
 
         DELETE_CURRENT_NOTE(state){

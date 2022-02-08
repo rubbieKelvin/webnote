@@ -7,29 +7,31 @@
 //prefixes of implementation that we want to test
 import {set, entries, get, setMany, del} from 'idb-keyval'
 
+const parsenote = (key, value) => {
+    if (key==="last_edited" || key==="created"){
+        return new Date(value)
+    }else if (key=="comments"){
+        value.forEach(comment=>{
+            comment.createdAt = new Date(comment.createdAt)
+        })
+    }
+    return value
+}
+
 export const dbSetNote = async (note) => {
     await set(`note.${note.local_id}`, JSON.stringify(note))
 }
 
 export const dbGetNote = async (local_id) => {
     const res = await get(`note.${local_id}`)
-    return JSON.parse(res, (key, value)=>{
-        if (key==="last_edited" || key==="created"){
-            return new Date(value)
-        }
-        return value
-    })
+    return JSON.parse(res, parsenote)
 }
 
 export const dbGetAllNotes = async () => {
     let res = await entries()
     res = res.filter(([key, value])=>key.startsWith('note.'))
-    return res.map(([key, value])=>JSON.parse(value, (k, v)=>{
-        if (k==="last_edited" || k==="created"){
-            return new Date(v)
-        }
-        return v
-    }))
+    res = res.map(([key, value])=>JSON.parse(value, parsenote))
+    return res
 }
 
 export const dbSaveAll = async (notes) => {
