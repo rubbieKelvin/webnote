@@ -1,5 +1,5 @@
 <template>
-    <div class=" select-none text-text bg-elevation min-w-[15%] max-w-[15%] py-4 px-2 flex flex-col gap-12">
+    <div class="overflow-clip select-none text-text bg-elevation md:min-w-[15%] md:max-w-[15%] py-4 px-2 hidden md:flex flex-col gap-12">
         <!-- ... -->
         <profile-banner class=""/>
         <!-- ... -->
@@ -89,7 +89,6 @@ export default {
     computed: {
         ...mapState({
             appmode: state => state.appmode,
-            tags: state => state.notebook.tags
         })
     },
     components: {ProfileBanner},

@@ -1,21 +1,21 @@
 <template>
     <div class="flex-grow flex flex-col gap-2">
         <!-- header -->
-        <div class="flex px-2">
+        <div class="flex px-2 md:flex-row flex-col-reverse">
             <div class="flex flex-grow flex-col w-[70%]">
                 <!-- ... -->
-                <input v-model="noteTitle" class="w-full h-14 outline-accent font-poppins text-5xl font-bold flex-grow" v-if="noteseditmode" type="text" placeholder="Enter title..."> 
-                <h1 v-else class="font-poppins break-all text-4xl w-full flex-grow font-bold">{{getActiveNote.title}}</h1>
+                <input v-model="noteTitle" class="w-full md:h-14 h-10 outline-accent font-poppins text-2xl md:text-4xl font-bold flex-grow" v-if="noteseditmode" type="text" placeholder="Enter title..."> 
+                <h1 v-else class="font-poppins break-all md:text-4xl text-2xl w-full flex-grow font-medium md:font-bold">{{getActiveNote.title}}</h1>
                 <!-- ... -->
                 <div class="flex-grow">
-                    <div class="h-8 items-center flex gap-4">
-                        <p class=" select-none text-gray-700">{{getActiveNote.author}}</p>
+                    <div class="md:h-8 items-center flex gap-4">
+                        <p class="md:text-base text-xs select-none text-gray-700">{{getActiveNote.author}}</p>
                         <button v-if="noteseditmode" class="text-white bg-accent rounded-md flex items-center justify-center w-6 h-6">+</button>
                     </div>
 
                 </div>
             </div>
-            <p v-if="!noteseditmode" class="flex-grow select-none text-sm text-right text-gray-600">
+            <p v-if="!noteseditmode" class="flex-grow select-none md:text-sm text-xs md:text-right text-gray-600">
                 last edited {{prettyDate(getActiveNote.last_edited)}}
             </p>
             
@@ -36,7 +36,7 @@
                             :class="[
                                 (activeContentItem===item.id) ? 'border-accent' : ' border-gray-200'
                             ]"
-                            class="px-2 scrollbar font-poppins outline-none border-4 rounded-md outline-2 resize-none"/>
+                            class="px-2 scrollbar font-poppins outline-none border-2 md:border-4 rounded-md outline-2 resize-none"/>
                     </template>
                     <template v-else>
                         <p>{{item.text}}</p>
@@ -49,14 +49,14 @@
                         <div class="flex gap-4">
                             <div :class="[
                                 (activeContentItem===item.id) ? 'border-accent' : ' border-gray-200'
-                            ]" class="flex rounded-md gap-1 items-center border-4 px-2">
+                            ]" class="flex rounded-md gap-1 items-center border-2 md:border-4 px-2">
                                 <p class="mr-1 text-sm font-poppins">Display Text</p>
                                 <div :class="[(activeContentItem===item.id) ? 'bg-accent' : ' bg-gray-200']" class=" w-[3px] h-[30px]"/>
                                 <input @input="updateContentItem(item.id, {text: $event.target.value})" :value="item.text" @click="$store.commit('SET_CURRENT_CONTENT_ITEM', item.id)" class="ml-1 flex-grow outline-none" type="text" placeholder="enter display text...">
                             </div>
                             <div :class="[
                                 (activeContentItem===item.id) ? 'border-accent' : ' border-gray-200'
-                            ]" class="flex flex-grow rounded-md gap-1 items-center border-4 px-2">
+                            ]" class="flex flex-grow rounded-md gap-1 items-center border-2 md:border-4 px-2">
                                 <p class="mr-1 text-sm font-poppins">Url</p>
                                 <div :class="[(activeContentItem===item.id) ? 'bg-accent' : ' bg-gray-200']" class=" w-[3px] h-[30px]"/>
                                 <input @input="updateContentItem(item.id, {url: $event.target.value})" :value="item.url" @click="$store.commit('SET_CURRENT_CONTENT_ITEM', item.id)" class="ml-1 flex-grow outline-none" type="url" placeholder="enter url...">
@@ -89,7 +89,7 @@
                             :class="[
                                 (activeContentItem===item.id) ? 'border-accent' : ' border-gray-200'
                             ]"
-                            class="px-2 py-1 scrollbar font-poppins outline-none border-4 rounded-md outline-2 resize-none">
+                            class="px-2 py-1 scrollbar font-poppins outline-none border-2 md:border-4 rounded-md outline-2 resize-none">
                     </template>
                     <template v-else>
                         <div class="flex flex-col gap-3">
@@ -112,7 +112,7 @@
                             :class="[
                                 (activeContentItem===item.id) ? 'border-accent' : ' border-gray-200'
                             ]"
-                            class="px-2 scrollbar font-poppins outline-none border-4 rounded-md outline-2 resize-none"/>
+                            class="px-2 scrollbar font-poppins outline-none border-2 md:border-4 rounded-md outline-2 resize-none"/>
                     </template>
                     <template v-else>
                         <highlightjs
@@ -126,7 +126,7 @@
                 <!-- IMAGE -->
                 <template v-if="item.type === types.image">
                     <template v-if="noteseditmode">
-                        <div :class="[(activeContentItem===item.id) ? 'border-accent' : ' border-gray-200']" class="flex rounded-md border-4">
+                        <div :class="[(activeContentItem===item.id) ? 'border-accent' : ' border-gray-200']" class="flex rounded-md border-2 md:border-4">
                             <img class="rounded-l-md w-14 h-14 object-cover" :src="item.src" alt="">
                             <input @input="updateContentItem(item.id, {src: $event.target.value})" @click="$store.commit('SET_CURRENT_CONTENT_ITEM', item.id)" :value="item.src" type="text" placeholder="image url" class="px-2 flex-grow outline-none">
                             <button title="upload local image (Note working. yet to implement backend)" @click="$refs[`${item.id}_img_input`][0].click(), $store.commit('SET_CURRENT_CONTENT_ITEM', item.id)" class="hover:text-accent px-4 rounded-r-md text-text">
@@ -184,7 +184,7 @@
                 <!-- LIST -->
                 <template v-if="item.type === types.list">
                     <template v-if="noteseditmode">
-                        <div :class="[(activeContentItem===item.id) ? 'border-accent' : ' border-gray-200']" class="border-4 p-2 rounded-md">
+                        <div :class="[(activeContentItem===item.id) ? 'border-accent' : ' border-gray-200']" class="border-2 md:border-4 p-2 rounded-md">
                             <!-- item component -->
                             <div :key="subitem.id" v-for="subitem in item.items" class="flex gap-3 group items-center hover:bg-accent hover:bg-opacity-10 pl-2">
                                 <!-- item -->

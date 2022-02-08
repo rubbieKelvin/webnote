@@ -1,8 +1,7 @@
 <template>
-    <div class=" flex flex-row h-screen max-h-screen min-h-screen">
+    <div class=" flex flex-row h-full md:h-screen max-h-screen">
         <side-bar/>
         <left-section/>
-        <div class=" bg-stroke min-w-[1px] max-w-[1px]"/>
         <note-space/>
         <right-side-bar/>
     </div>
@@ -61,5 +60,6 @@ export default {
     beforeDestroy() {
         document.removeEventListener('keydown', this._keyListener);
     }
+
 }
 </script>

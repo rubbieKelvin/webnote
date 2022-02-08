@@ -1,5 +1,5 @@
 <template>
-    <div class=" select-none h-full bg-elevation min-w-[15%] max-w-[15%] flex flex-col gap-3">
+    <div class=" select-none h-full bg-elevation min-w-[15%] max-w-[15%] hidden md:flex flex-col gap-3">
         <template v-if="$store.state.appmode.rightsidemode==='default' || $store.state.appmode.rightsidemode==='comments'">
             <div class="text-text flex gap-4 h-14 items-center px-4">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

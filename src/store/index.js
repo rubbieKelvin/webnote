@@ -23,6 +23,7 @@ const getNoteContentitem = (note, id) => {
 
 const set_active_note = (state, note) => {
     if (note.trash) return
+    state.mobileWindow = 1
     state.notebook.activeNote = note.local_id
     state.appmode.noteseditmode = false
     state.notebook.activeContentItem = null
@@ -71,7 +72,8 @@ export const store = createStore({
             rightsidemode: 'default',
             newnotemodalvisible: false
         },
-        searchFilter: ''
+        searchFilter: '',
+        mobileWindow: 0
     },
     getters: {
         getNotes: (state) => {
