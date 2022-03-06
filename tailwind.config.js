@@ -5,6 +5,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: 'mulish',
+        serif: 'skm'
+      },
       colors: {
         elevation: "#f5f5f5",
         text: "#151515",
