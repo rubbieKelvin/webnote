@@ -353,7 +353,9 @@
             md:rounded-none
           "
         >
-          <h3 class="font-poppins break-all">{{ note.title }}</h3>
+          <h3 class="font-medium text-xl md:text-base break-all">
+            {{ note.title }}
+          </h3>
           <!-- <p class=" text-sm">But with some giudiance and explanation, we might get it right...</p> -->
           <div class="flex flex-row gap-3 items-center">
             <p class="text-sm flex-grow text-gray-400">

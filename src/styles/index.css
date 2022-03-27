@@ -2,15 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-*{
-    font-family: 'Poppins', sans-serif;
-    -webkit-tap-highlight-color: transparent;
-}
-
-.font-dm{
-    font-family: 'DM Sans', sans-serif;
-}
-
-.font-poppins{
-    font-family: 'Poppins', sans-serif !important;
+* {
+  -webkit-tap-highlight-color: transparent;
 }
