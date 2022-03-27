@@ -1,6 +1,6 @@
 <template>
-    <div class="px-2 py-1 md:mx-0 mx-5 rounded-md md:rounded-none bg-accent bg-opacity-10 text-accent text-sm">
-        <p class="text">Search results for "<b>{{$store.state.searchFilter.trim()}}</b>"</p>
+    <div class="px-2 py-1 md:mx-0 mx-5 rounded-md md:rounded-none bg-accent bg-opacity-10 text-textFaint text-sm">
+        <p class="text">Search results for "<span>{{$store.state.searchFilter.trim()}}</span>"</p>
     </div>
 </template>
 
