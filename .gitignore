@@ -4,3 +4,6 @@ dist
 dist-ssr
 *.local
 *trash*
+venv
+__pycache__
+*sqlite3

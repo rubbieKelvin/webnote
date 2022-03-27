@@ -1,2 +1,1 @@
-# Web Note
-rubbiekelvin
+# Webnote
