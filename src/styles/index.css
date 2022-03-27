@@ -1,18 +1,8 @@
-@font-face{
-    font-family: skm;
-    src: url(/src/assets/fonts/SkModernist/sk-modernist.otf)
-}
-
-@font-face{
-    font-family: skm-bold;
-    src: url(/src/assets/fonts/SkModernist/sk-modernist-bold.otf)
-}
-
-@font-face{
-    font-family: mulish;
-    src: url(/src/assets/fonts/Mulish/Mulish-VariableFont_wght.ttf)
-}
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+}

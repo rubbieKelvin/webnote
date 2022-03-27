@@ -10,14 +10,20 @@
         <div
             tabindex="0"
             :class="[($store.state.globals.popup==`menuitem::${title}`) ? 'p-2 border' : 'min-w-[0px] h-0 p-0 border-0 overflow-clip']"
-            class="absolute outline-none top-9 transition-all duration-100 cursor-default bg-white rounded-md border-gray-200 shadow-lg min-w-[200px] flex flex-col gap-2">
-            <p
-                v-for="item in list"
-                :key="item"
-                @click="$emit(`menuclick:${slug(item)}`)"
-                class="p-1 cursor-pointer hover:bg-accent rounded-md hover:text-white">
-                {{item}}
-            </p>
+            class="_popup">
+            <div class="flex px-1 py-2 md:hidden">
+                <p class="font-medium text-2xl flex-grow">{{title}}</p>
+                <button @click="$store.state.globals.popup=null" class=" bg-gray-100 px-3 py-1 rounded-md text-textFaint text-sm">close</button>
+            </div>
+            <template v-for="item in list" :key="item">
+                <hr v-if="item === '-'">
+                <p
+                    v-else
+                    @click="$emit(`menuclick:${slug(item)}`)"
+                    class="md:p-1 p-2 cursor-pointer hover:bg-hoverColor rounded-md hover:text-textFaint">
+                    {{item}}
+                </p>
+            </template>
         </div>
     </div>
 </template>
@@ -46,3 +52,12 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+._popup{
+    @apply fixed md:absolute outline-none transition-all duration-100;
+    @apply cursor-default bg-white md:rounded-md border-gray-200;
+    @apply md:shadow-lg min-w-[180px] flex flex-col gap-2;
+    @apply left-0 top-0 md:top-9 right-0 md:right-auto z-20;
+}
+</style>

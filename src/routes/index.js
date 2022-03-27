@@ -7,6 +7,7 @@ export const router = createRouter({
     routes: [
         {component: IndexPage, path: '/'},
         {component: WorkSpace, path: '/app'},
+        {component: WorkSpace, path: '/app/note/:note'},
         // ...
         // {component: <404>, path: '/:catchAll(.*)'}
     ],
