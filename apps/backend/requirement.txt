@@ -1,0 +1,9 @@
+asgiref==3.5.0
+Django==4.0.3
+django-cors-headers==3.11.0
+django-restql==0.15.2
+djangorestframework==3.13.1
+maprule==1.1.0
+pyPEG2==2.15.2
+pytz==2022.1
+sqlparse==0.4.2
